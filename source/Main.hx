@@ -53,7 +53,7 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		if (zoom == -1)
+		if (flixelStuff.get('zoom') == -1)
 		{
 			var ratioX:Float = stageWidth / flixelStuff.get('width');
 			var ratioY:Float = stageHeight / flixelStuff.get('height');
@@ -63,14 +63,14 @@ class Main extends Sprite
 		}
 
 		addChild(new FlxGame(
-			flixelStuff.get('width'),
-			flixelStuff.get('height'),
-			flixelStuff.get('state'),
-			flixelStuff.get('zoom'),
-			flixelStuff.get('fps'),
-			flixelStuff.get('fps'),
-			flixelStuff.get('skipSplash'),
-			flixelStuff.get('fullscreen')
+			flixelStuff.get('width'), //width
+			flixelStuff.get('height'), //height
+			flixelStuff.get('state'), // the initial state
+			flixelStuff.get('zoom'), //the zoom (-1)
+			flixelStuff.get('fps'), //the framerate
+			flixelStuff.get('fps'), //again
+			flixelStuff.get('skipSplash'), //the splash (its cool go apreciate it pls if you hide you are cring)
+			flixelStuff.get('fullscreen') //fullscreen
 		));
 	}
 
@@ -94,7 +94,7 @@ class Main extends Sprite
 
 	public static function setFPSCap(cap:Int)
 	{
-		Main.flixelStuff.get('fps') = cap;
+		flixelStuff.get('fps') = cap;
 		updateFramerate();
 	}
 }

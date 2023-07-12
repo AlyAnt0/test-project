@@ -82,7 +82,7 @@ class Utils
 	  * sei la eu so tive a ideia se faze isso e eu to um pouco orgulhoso disso kkkk
 	  * @param text       The text where the first char of this text if its lowercase will be UPPERCASE.
 	*/
-	static function firstLetterToUpperCase(text:String):String
+	public static function firstLetterToUpperCase(text:String):String
 	{
 		if (StringTools.startsWith(text, text.charAt(0).toLowerCase()))
 			text = text.replace(text.charAt(0), text.charAt(0).toUpperCase());

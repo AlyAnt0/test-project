@@ -1,4 +1,4 @@
-package meta;
+package;
 
 import flixel.FlxG;
 import flixel.FlxG;

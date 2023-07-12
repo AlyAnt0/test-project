@@ -16,7 +16,7 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="false" />
+	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
@@ -27,9 +27,20 @@
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" />
 
+	<assets path="assets/mobile" if="mobile" />
+	<assets path='assets/mobile' rename="mobile" unless="mobile" />
+	<section if="android">
+		<!--Gradle-->
+		<android gradle-version="7.6" gradle-plugin="7.3.1" />
+		<!--Audio Recording Fix-->
+		<android target-sdk-version="29" if="${lime <= 8.0.0}" />
+	</section>
+
 	<!-- _____________________________ Path Settings ____________________________ -->
 
-	<set name="BUILD_DIR" value="export" />
+	<set name="BUILD_DIR" value="export/debug" if="debug" />
+	<set name="BUILD_DIR" value="export/release" unless="debug" />
+	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	<source path="source" />
 	<assets path="assets" />
 

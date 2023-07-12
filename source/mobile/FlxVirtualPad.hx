@@ -1,4 +1,4 @@
-package ui;
+package mobile;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxTileFrames;
@@ -18,10 +18,10 @@ import openfl.utils.ByteArray;
  *
  * @author Ka Wing Chin, a lot of new cases added by Sirox :)
  */
-@:keep @:bitmap("assets/images/virtual-input.png")
+@:keep @:bitmap("assets/mobile/virtual-input.png")
 class GraphicVirtualInput extends BitmapData {}
  
-@:file("assets/images/virtual-input.txt")
+@:file("assets/mobile/virtual-input.txt")
 class VirtualInputData extends #if (lime_legacy || nme) ByteArray #else ByteArrayData #end {}
 
 class FlxVirtualPad extends FlxSpriteGroup
@@ -331,8 +331,8 @@ class FlxVirtualPad extends FlxSpriteGroup
 			#if !web
 			var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmapData);
 			return FlxAtlasFrames.fromSpriteSheetPacker(graphic, Std.string(new VirtualInputData()));
-			#else
-			var graphic:FlxGraphic = FlxGraphic.fromAssetKey(Paths.image('virtual-input'));
+			#elseif mobile
+			var graphic:FlxGraphic = FlxGraphic.fromAssetKey(Paths.image('virtual-input', 'mobile'));
 			return FlxAtlasFrames.fromSpriteSheetPacker(graphic, Std.string(new VirtualInputData()));
 			#end
 	}

@@ -1,4 +1,4 @@
-package meta;
+package;
 
 import flixel.math.FlxMath;
 import lime.utils.Assets;

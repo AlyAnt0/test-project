@@ -76,15 +76,16 @@ class Main extends Sprite
 
 	public static function updateFramerate()
 	{
-		if (Main.framerate > FlxG.updateFramerate)
+		var framerate = Main.flixelStuff.get('fps');
+		if (framerate > FlxG.updateFramerate)
 		{
-			FlxG.updateFramerate = Main.flixelStuff.get('fps');
-			FlxG.drawFramerate = Main.flixelStuff.get('fps');
+			FlxG.updateFramerate = framerate;
+			FlxG.drawFramerate = framerate;
 		}
 		else
 		{
-			FlxG.drawFramerate = Main.flixelStuff.get('fps');
-			FlxG.updateFramerate = Main.flixelStuff.get('fps');
+			FlxG.drawFramerate = framerate;
+			FlxG.updateFramerate = framerate;
 		}
 	}
 

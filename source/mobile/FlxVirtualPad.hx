@@ -18,10 +18,10 @@ import openfl.utils.ByteArray;
  *
  * @author Ka Wing Chin, a lot of new cases added by Sirox :)
  */
-@:keep @:bitmap("assets/mobile/virtual-input.png")
+@:keep @:bitmap("assets/mobile/images/virtual-input.png")
 class GraphicVirtualInput extends BitmapData {}
  
-@:file("assets/mobile/virtual-input.txt")
+@:file("assets/mobile/images/virtual-input.txt")
 class VirtualInputData extends #if (lime_legacy || nme) ByteArray #else ByteArrayData #end {}
 
 class FlxVirtualPad extends FlxSpriteGroup

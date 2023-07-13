@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 #if mobile
 import flixel.input.actions.FlxActionInput;

@@ -7,11 +7,6 @@ using StringTools;
 
 class Utils
 {
-	public static function difficultyFromNumber(number:Int):String
-	{
-		return difficultyArray[number];
-	}
-
 	public static function dashToSpace(string:String):String
 	{
 		return string.replace("-", " ");

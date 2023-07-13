@@ -55,6 +55,8 @@ class Main extends Sprite
 
 		if (flixelStuff.get('zoom') == -1)
 		{
+			var gameWidth = flixelStuff.get('width');
+			var gameHeight = flixelStuff.get('height');
 			var ratioX:Float = stageWidth / flixelStuff.get('width');
 			var ratioY:Float = stageHeight / flixelStuff.get('height');
 			flixelStuff.get('zoom') = Math.min(ratioX, ratioY);
@@ -72,30 +74,5 @@ class Main extends Sprite
 			flixelStuff.get('skipSplash'), //the splash (its cool go apreciate it pls if you hide you are cring)
 			flixelStuff.get('fullscreen') //fullscreen
 		));
-	}
-
-	public static function updateFramerate()
-	{
-		var framerate = Main.flixelStuff.get('fps');
-		if (framerate > FlxG.updateFramerate)
-		{
-			FlxG.updateFramerate = framerate;
-			FlxG.drawFramerate = framerate;
-		}
-		else
-		{
-			FlxG.drawFramerate = framerate;
-			FlxG.updateFramerate = framerate;
-		}
-	}
-
-	public static function adjustFPS(num:Float):Float{
-		return FlxG.elapsed / (1/60) * num;
-	}
-
-	public static function setFPSCap(cap:Int)
-	{
-		flixelStuff.get('fps') = cap;
-		updateFramerate();
 	}
 }

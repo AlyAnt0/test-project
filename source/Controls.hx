@@ -385,6 +385,8 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.DOWN, (action, state) -> addButton(action, virtualPad.buttonDown, state));
 				inline forEachBound(Control.LEFT, (action, state) -> addButton(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> addButton(action, virtualPad.buttonRight, state));
+			case DOWN_LEFT | DOWN_LEFT_RIGHT | DOWN_RIGHT | UP_LEFT | UP_LEFT_DOWN | UP_RIGHT | UP_RIGHT_DOWN:
+			//DONT REMOVE THIS!!!
 			case NONE:
 				// Hi
 		}
@@ -403,6 +405,8 @@ class Controls extends FlxActionSet
 			case A_B_X_Y:
 				inline forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
 				inline forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case A_B_C_X | A_B_C_Y | A_B_X | A_B_X_Y_C | A_B_X_Y_C_Z_V_G_S_F_E_D | A_B_Y | A_C | A_C_X_Y | A_X | A_X_C | A_X_Y | A_Y | A_Y_C | B | B_C | B_C_X_Y | B_X | B_X_C | B_X_Y | B_X_Y_C_Z_V_G_S | B_Y | B_Y_C | C | C_X | C_Y | X | X_Y | Y:
+				//who was the person that wrote a lot of this shit here
 			case NONE:
 			 	// Hi
 		}
@@ -433,6 +437,8 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UI_DOWN, (action, state) -> addButton(action, virtualPad.buttonDown, state));
 				inline forEachBound(Control.UI_LEFT, (action, state) -> addButton(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.UI_RIGHT, (action, state) -> addButton(action, virtualPad.buttonRight, state));
+			case DOWN_LEFT | DOWN_LEFT_RIGHT | DOWN_RIGHT | UP_LEFT | UP_LEFT_DOWN | UP_RIGHT | UP_RIGHT_DOWN:
+			
 			case NONE:
 				// Hi
 		}
@@ -709,27 +715,15 @@ class Controls extends FlxActionSet
 		removeKeyboard();
 
 		// keyboardScheme = scheme;
-		inline bindKeys(Control.UP, [Init.gameControls.get('UP')[0][0], Init.gameControls.get('UP')[0][1]]);
-		inline bindKeys(Control.DOWN, [Init.gameControls.get('DOWN')[0][0], Init.gameControls.get('DOWN')[0][1]]);
-		inline bindKeys(Control.SPACE, [Init.gameControls.get('SPACE')[0][0], Init.gameControls.get('SPACE')[0][1]]);
-		inline bindKeys(Control.LEFT, [Init.gameControls.get('LEFT')[0][0], Init.gameControls.get('LEFT')[0][1]]);
-		inline bindKeys(Control.RIGHT, [Init.gameControls.get('RIGHT')[0][0], Init.gameControls.get('RIGHT')[0][1]]);
-		inline bindKeys(Control.UI_UP, [Init.gameControls.get('UI_UP')[0][0], Init.gameControls.get('UI_UP')[0][1]]);
-		inline bindKeys(Control.UI_DOWN, [Init.gameControls.get('UI_DOWN')[0][0], Init.gameControls.get('UI_DOWN')[0][1]]);
-		inline bindKeys(Control.UI_LEFT, [Init.gameControls.get('UI_LEFT')[0][0], Init.gameControls.get('UI_LEFT')[0][1]]);
-		inline bindKeys(Control.UI_RIGHT, [Init.gameControls.get('UI_RIGHT')[0][0], Init.gameControls.get('UI_RIGHT')[0][1]]);
-		inline bindKeys(Control.ACCEPT, [
-			Init.gameControls.get('ACCEPT')[0][0],
-			Init.gameControls.get('ACCEPT')[0][1],
-			Init.gameControls.get('ACCEPT')[0][2]
-		]);
-		inline bindKeys(Control.BACK, [
-			Init.gameControls.get('BACK')[0][0],
-			Init.gameControls.get('BACK')[0][1],
-			Init.gameControls.get('BACK')[0][2]
-		]);
-		inline bindKeys(Control.PAUSE, [Init.gameControls.get('PAUSE')[0][0], Init.gameControls.get('PAUSE')[0][1]]);
-		inline bindKeys(Control.RESET, [Init.gameControls.get('RESET')[0][0], Init.gameControls.get('RESET')[0][1]]);
+
+				inline bindKeys(Control.UP, [K, FlxKey.UP]);
+				inline bindKeys(Control.DOWN, [S, FlxKey.DOWN]);
+				inline bindKeys(Control.LEFT, [A, FlxKey.LEFT]);
+				inline bindKeys(Control.RIGHT, [L, FlxKey.RIGHT]);
+				inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
+				inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
+				inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+				inline bindKeys(Control.RESET, [R]);
 
 		/* 
 			#if (haxe >= "4.0.0")

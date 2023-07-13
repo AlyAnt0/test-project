@@ -716,14 +716,14 @@ class Controls extends FlxActionSet
 
 		// keyboardScheme = scheme;
 
-				inline bindKeys(Control.UP, [K, FlxKey.UP]);
-				inline bindKeys(Control.DOWN, [S, FlxKey.DOWN]);
-				inline bindKeys(Control.LEFT, [A, FlxKey.LEFT]);
-				inline bindKeys(Control.RIGHT, [L, FlxKey.RIGHT]);
-				inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-				inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-				inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				inline bindKeys(Control.RESET, [R]);
+				inline bindKeys(Control.UP, [FlxKey.K, FlxKey.UP]);
+				inline bindKeys(Control.DOWN, [FlxKey.S, FlxKey.DOWN]);
+				inline bindKeys(Control.LEFT, [FlxKey.A, FlxKey.LEFT]);
+				inline bindKeys(Control.RIGHT, [FlxKey.L, FlxKey.RIGHT]);
+				inline bindKeys(Control.ACCEPT, [FlxKey.Z, FlxKey.SPACE, FlxKey.ENTER]);
+				inline bindKeys(Control.BACK, [FlxKey.BACKSPACE, FlxKey.ESCAPE]);
+				inline bindKeys(Control.PAUSE, [FlxKey.P, FlxKey.ENTER, FlxKey.ESCAPE]);
+				inline bindKeys(Control.RESET, [FlxKey.R]);
 
 		/* 
 			#if (haxe >= "4.0.0")

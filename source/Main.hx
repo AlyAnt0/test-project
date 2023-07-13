@@ -53,26 +53,26 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		if (flixelStuff.get('zoom') == -1)
+		if (Main.flixelStuff.get('zoom') == -1)
 		{
-			var gameWidth = flixelStuff.get('width');
-			var gameHeight = flixelStuff.get('height');
-			var ratioX:Float = stageWidth / flixelStuff.get('width');
-			var ratioY:Float = stageHeight / flixelStuff.get('height');
-			flixelStuff.get('zoom') = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / flixelStuff.get('zoom'));
-			gameHeight = Math.ceil(stageHeight / flixelStuff.get('zoom'));
+			var gameWidth = Main.flixelStuff.get('width');
+			var gameHeight = Main.flixelStuff.get('height');
+			var ratioX:Float = stageWidth / Main.flixelStuff.get('width');
+			var ratioY:Float = stageHeight / Main.flixelStuff.get('height');
+			Main.flixelStuff.get('zoom') = Math.min(ratioX, ratioY);
+			gameWidth = Math.ceil(stageWidth / Main.flixelStuff.get('zoom'));
+			gameHeight = Math.ceil(stageHeight / Main.flixelStuff.get('zoom'));
 		}
 
 		addChild(new FlxGame(
-			flixelStuff.get('width'), //width
-			flixelStuff.get('height'), //height
-			flixelStuff.get('state'), // the initial state
-			flixelStuff.get('zoom'), //the zoom (-1)
-			flixelStuff.get('fps'), //the framerate
-			flixelStuff.get('fps'), //again
-			flixelStuff.get('skipSplash'), //the splash (its cool go apreciate it pls if you hide you are cring)
-			flixelStuff.get('fullscreen') //fullscreen
+			Main.flixelStuff.get('width'), //width
+			Main.flixelStuff.get('height'), //height
+			Main.flixelStuff.get('state'), // the initial state
+			Main.flixelStuff.get('zoom'), //the zoom (-1)
+			Main.flixelStuff.get('fps'), //the framerate
+			Main.flixelStuff.get('fps'), //again
+			Main.flixelStuff.get('skipSplash'), //the splash (its cool go apreciate it pls if you hide you are cring)
+			Main.flixelStuff.get('fullscreen') //fullscreen
 		));
 	}
 }

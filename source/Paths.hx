@@ -198,6 +198,11 @@ class Paths
 		return returnPath;
 	}
 
+	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
+	{
+		return getPath(file, type, library);
+	}
+
 	static public function shader(name:String) {
 		return OpenFlAssets.getText('assets/shaders/$name.frag');
 	}
@@ -227,5 +232,15 @@ class Paths
 	{
 		var music:Sound = returnSound('music', key, library);
 		return music;
+	}
+
+	inline static public function sparrow(key:String, ?library:String)
+	{
+		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
+	}
+
+	inline static public function getPackerAtlas(key:String, ?library:String)
+	{
+		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 }

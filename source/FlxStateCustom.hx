@@ -8,7 +8,7 @@ import mobile.FlxVirtualPad;
 
 class FlxStateCustom extends FlxUIState
 {
-	private var controls(get, never):Controls;
+	private var controls:Controls;
 	#if android
 	var virtualPad:FlxVirtualPad;
 	var trackedInputs:Array<FlxActionInput> = [];

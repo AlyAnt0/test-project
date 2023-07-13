@@ -20,12 +20,34 @@ import openfl.utils.Assets:
 using StringTools;
 
 typedef StageJSON = {
-	var objects:Array<Dynamic>;
+	var objects:Array<Array<ObjectJeisom>>;
 	var bfPos:Array<Float>;
 	var gfPos:Array<Float>;
 	var dadPos:Array<Float>;
 	var cameraZoom:Float;
 	var curStage:String;
+}
+
+typedef ObjectJeisom = {
+	var image:String;
+	var x:Float;
+	var y:Float;
+	var scale:Float;
+	var scrollX:Float;
+	var scrollY:Float;
+	var frontChars:Bool;
+	var animated:Bool;
+	var animations:Array<Array<Animation>>;
+	var blend:String;
+}
+
+typedef Animation = {
+	var name:String;
+	var prefix:String;
+	var fps:String;
+	var indices:Array<Int>;
+	var offsets:Array<Float>;
+	var loop:Bool;
 }
 class Stage extends FlxTypedGroup<FlxBasic> {
   public static var jsonObjects:Map<String,FlxSprite>=[];
@@ -152,7 +174,7 @@ class Stage extends FlxTypedGroup<FlxBasic> {
 					obj.scale.set(stageObjs[3],stageObjs[3]);
 					obj.updateHitbox();
 				}
-				obj.scrollFactor.set(stageObjs[4],stageObjs[4]);
+				obj.scrollFactor.set(stageObjs[4],stageObjs[5]);
 				jsonObjects.set(stageObjs[0],obj);
 				add(jsonObjects.get(stageObjs[0]));
 				FlxG.log.add('Added JSON objects: '+StageJSON.objects[i][0]);

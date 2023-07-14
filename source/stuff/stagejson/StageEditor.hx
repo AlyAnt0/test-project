@@ -29,7 +29,9 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import haxe.Json;
+import openfl.utils.Assets as OpenFLAssets; 
 import stuff.stagejson.Stage.StageJSON;
+import flixel.math.FlxPoint;
 
 class StageEditor extends FlxStateCustom
 {
@@ -50,7 +52,58 @@ class StageEditor extends FlxStateCustom
 	var directionY:Int = 0;
 	var curObjectSelected:Int = 0;
 
+	var templateStage = '{
+		"objects": [
+			{
+				"image":"stage/back",
+				"x": -600,
+				"y": -200,
+				"scale": 1,
+				"scrollX": 0.9,
+				"scrollY": 0.9,
+				"frontChars": false,
+				"flipX": false,
+				"animated": false,
+				"animations": [],
+				"blend":"none"
+			},
+			{
+				"image":"stage/front",
+				"x": -650,
+				"y": 600,
+				"scale": 1.1,
+				"scrollX": 0.9,
+				"scrollY": 0.9,
+				"frontChars": false,
+				"flipX": false,
+				"animated": false,
+				"animations": [],
+				"blend":"none"
+			},
+			{
+				"image":"stage/curtains",
+				"x": -500,
+				"y": -300,
+				"scale": 0.9,
+				"scrollX": 1.3,
+				"scrollY": 1.3,
+				"frontChars": true,
+				"flipX": false,
+				"animated": false,
+				"animations": [],
+				"blend":"none"
+			}
+		],
+		"bfPos": [770, 450],
+		"gfPos": [400, 130],
+		"dadPos": [100, 100],
+		"cameraZoom": 0.9,
+		"curStage": "stageTemp"
+	}';
+
 	var UI_box:FlxUITabMenu;
+	var stageJson:StageJSON = cast Json.parse(templateStage);
+	var stageEditorMap:Map<String, FlxSprite> = [];
 
 	override function create()
 	{
@@ -76,7 +129,7 @@ class StageEditor extends FlxStateCustom
 		for (i in 0...arrayText.length)
 		{
 			var text:FlxText = new FlxText(10, 5, 0, "", 32);
-			text.y += ((height + 20)  * i);
+			text.y += ((text.height + 20)  * i);
 			text.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 			text.cameras = [camUI];
 			objectTexts.add(text);
@@ -99,11 +152,18 @@ class StageEditor extends FlxStateCustom
 		UI_box.scrollFactor.set();
 
 		setUI();
+		loadTemplate();
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
+		for (object in stageObjects)
+		{
+			if (object.ID == curObjectSelected)
+				object.shader = Paths.shader('outline');
+		}
+
 		// camera stuff
 		if (!canMoveCam)
 			textStatus.text = "[ NO CAMERA MODE ]";
@@ -131,153 +191,116 @@ class StageEditor extends FlxStateCustom
 			curObjectSelected -= 1;
 		if (controls.RIGHT)
 			curObjectSelected += 1;
+
 		super.update(elapsed);
 	}
 
 	var imageInputText:FlxUIInputText;
 	var positionXStepper:FlxUINumericStepper; //x
 	var positionYStepper:FlxUINumericStepper; //y
+	var stepByStep:Float = 1;
 	public function setUI()
 	{
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Object";
 		
-		imageInputText = new FlxUIInputText(15, 30, 200, 'stage/stageback', 8);
+		imageInputText = new FlxUIInputText(15, 30, 200, 'stage/back', 8);
 		imageInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
-		positionXStepper = new FlxUINumericStepper(flipXCheckBox.x + 110, flipXCheckBox.y, 10, char.positionArray[0], -9000, 9000, 0);
+	
+		positionXStepper = new FlxUINumericStepper(imageInputText.x, (imageInputText.y + imageInputText.height) + 18, stepByStep, stageObjects[curObjectSelected].x, -900000, 900000, 0);
+		positionYStepper = new FlxUINumericStepper((positionXStepper.x + positionXStepper.width) +, (imageInputText.y + imageInputText.height) + 18, stepByStep, stageObjects[curObjectSelected].y, -900000, 900000, 0);
 
 		tab_group.add(imageInputText);
 		UI_box.addGroup(tab_group);
 	}
-	var templateStage = '{
-		"objects": [
-			[
-				"image":"stage/stageback", /*object asset*/
-				"x": -600, /*X*/
-				"y": -200, /*Y*/
-				"scale": 1, /*scale x and y*/
-				"scrollX": 0.9, /*scrollfactor x*/
-				"scrollY": 0.9, /*scrollfactor Y*/
-				"frontChars": false, /*its front of the chars*/
-				"animated": false, /*its animated*/
-				"animations": [],
-				"blend":"none"
-			],
-			[
-				"image":"stage/stagefront", /*object asset*/
-				"x": -650, /*X*/
-				"y": 600, /*Y*/
-				"scale": 1.1, /*scale x and y*/
-				"scrollX": 0.9, /*scrollfactor x*/
-				"scrollY": 0.9, /*scrollfactor Y*/
-				"frontChars": false, /*its front of the chars*/
-				"animated": false, /*its animated*/
-				"animations": [],
-				"blend":"none"
-			],
-			[
-				"image":"stage/stagecurtains", /*object asset*/
-				"x": -500, /*X*/
-				"y": -300, /*Y*/
-				"scale": 0.9, /*scale x and y*/
-				"scrollX": 1.3, /*scrollfactor x*/
-				"scrollY": 1.3, /*scrollfactor Y*/
-				"frontChars": true, /*its front of the chars*/
-				"animated": false, /*its animated*/
-				"animations": [],
-				"blend":"none"
-			]
-		],
-		"bfPos": [770, 450],
-		"gfPos": [400, 130],
-		"dadPos": [100, 100],
-		"cameraZoom": 0.9,
-		"curStage": "stageTemp"
-	}';
-	var stageMap:Map<String, FlxSprite> = [];
-	function loadTemplate()
+	public function loadTemplate()
 	{
 		var file:StageJSON = cast haxe.Json.parse(templateStage);
 		for (i in 0...file.objects.length)
 		{
 			for (object in stageObjects)
 			{
-				var obj = file.objects[0][i];
-				setObject(obj.image, obj.x, obj.y, obj.scale, obj.scrollX, obj.scrollY, obj.frontChars,)
+				var obj = file.objects[i];
+				setObject(obj.image, obj.x, obj.y, obj.scale, obj.scrollX, obj.scrollY, obj.frontChars, obj.flipX, obj.animated, obj.animations, obj.blend);
 				stageObjects.remove(object);
-				stageObjects.push(stageMap.);
+				stageObjects.push(stageEditorMap.get(substring(obj.image.indexOf('/') + 1, obj.image.length)));
 			}
 		}
 	}
 
 	// a maior funçao que eu programei ate agora
-	public static function setObject(image:String, x:Float, y:Float, scale:Float, scrollX:Float, scrollY:Float, frontChars:Bool, animated:Bool, animations:Array<Array<StageJSON.Animation>>, blend:String)
+	public function setObject(image:String, x:Float, y:Float, scale:Float, scrollX:Float, scrollY:Float, frontChars:Bool, flipX:Bool, animated:Bool, animations:Array<StageJSON.Animation>, blend:String)
 	{
-		var obj = new FlxSprite(x, y);
-		if (animated) {
-			for (i in 0...animations.length)
-			{
-				obj.frames = Paths.getSparrowAtlas(image);
-				var name = animations[0][i].name;
-				var prefix = animations[0][i].prefix;
-				var fps = animations[0][i].fps;
-				var indices = animations[0][i].indices;
-				var offsets = animations[0][i].offsets;
-				var loop = animations[0][i].loop;
-
-				if (indices.length > 0)
-					obj.animation.addByIndices(name, prefix, indices, "", fps);
-				else
-					obj.animation.addByPrefix(prefix, name, fps, loop);
-
-				obj.offset.set(offsets[0], offsets[1]);
+		//if (!stageEditorMap.exists(image.substring(image.indexOf('/') + 1, image.length)))
+		//{
+			var obj = new FlxSprite(x, y);
+			if (animated) {
+				for (i in 0...animations.length)
+				{
+					obj.frames = Paths.getSparrowAtlas(image);
+					var name = animations[i].name;
+					var prefix = animations[i].prefix;
+					var fps = animations[i].fps;
+					var indices = animations[i].indices;
+					var offsets = animations[i].offsets;
+					var loop = animations[i].loop;
+	
+					if (indices.length > 0)
+						obj.animation.addByIndices(name, prefix, indices, "", fps);
+					else
+						obj.animation.addByPrefix(prefix, name, fps, loop);
+	
+					obj.offset.set(offsets[0], offsets[1]);
+				}
+			} else {
+				obj.loadGraphic(Paths.image(image, 'stagejson'));
 			}
-		} else {
-			obj.loadGraphic(Paths.image(image, 'stagejson'));
-		}
-		obj.setGraphicSize(Std.int(obj.width * scale));
-		obj.scrollFactor.set(scrollX, scrollY);
-		if(!frontChars)
-			add(obj);
-		else
-			stage.foreground.add(obj);
+			obj.flipX = flipX;
+			obj.setGraphicSize(Std.int(obj.width * scale));
+			obj.scrollFactor.set(scrollX, scrollY);
 
-		//uhhhhhhh
-		switch (blend)
-		{
-			case "add":
-				obj.blend = ADD;
-			case "alpha":
-				obj.blend = ALPHA;
-			case "darken":
-				obj.blend = DARKEN;
-			case "difference":
-				obj.blend = DIFFERENCE;
-			case "erase":
-				obj.blend = ERASE;
-			case "hardlight":
-				obj.blend = HARDLIGHT;
-			case "invert":
-				obj.blend = INVERT;
-			case "layer":
-				obj.blend = LAYER;
-			case "lighten":
-				obj.blend = LIGHTEN;
-			case "multiply":
-				obj.blend = MULTIPLY;
-			case "overlay":
-				obj.blend = OVERLAY;
-			case "screen":
-				obj.blend = SCREEN;
-			case "shader":
-				obj.blend = SHADER;
-			case "substract":
-				obj.blend = SUBSTRACT;
-		}
-
-		var objname:String = substring(image.indexOf('/') + 1, image.length);
-		stageMap.set(objname, obj);
-		return stageMap.get(objname);
+			//uhhhhhhh
+			switch (blend)
+			{
+				case "add":
+					obj.blend = ADD;
+				case "alpha":
+					obj.blend = ALPHA;
+				case "darken":
+					obj.blend = DARKEN;
+				case "difference":
+					obj.blend = DIFFERENCE;
+				case "erase":
+					obj.blend = ERASE;
+				case "hardlight":
+					obj.blend = HARDLIGHT;
+				case "invert":
+					obj.blend = INVERT;
+				case "layer":
+					obj.blend = LAYER;
+				case "lighten":
+					obj.blend = LIGHTEN;
+				case "multiply":
+					obj.blend = MULTIPLY;
+				case "overlay":
+					obj.blend = OVERLAY;
+				case "screen":
+					obj.blend = SCREEN;
+				case "shader":
+					obj.blend = SHADER;
+				case "substract":
+					obj.blend = SUBSTRACT;
+				default:
+					obj.blend = NORMAL;
+			}
+	
+			var objname:String = image.substring(image.indexOf('/') + 1, image.length);
+			stageEditorMap.set(objname, obj);
+			if(!frontChars)
+				add(stageEditorMap.get(objname));
+			else
+				stage.foreground.add(stageEditorMap.get(objname));
+		//}
 	}
 
 	var _file:FileReference;
@@ -323,10 +346,11 @@ class StageEditor extends FlxStateCustom
 			"cameraZoom": stageJson.cameraZoom,
 			"curStage": stageJson.curStage
 		};
+
 		_file = new FileReference();
 		_file.addEventListener(Event.COMPLETE, onSaveComplete);
 		_file.addEventListener(Event.CANCEL, onSaveCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file.save(data, daAnim + ".json");
+		_file.save(haxe.Json.stringify(stageData, "\t"), "data.json");
 	}
 }

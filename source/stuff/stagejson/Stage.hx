@@ -20,7 +20,7 @@ import openfl.utils.Assets:
 using StringTools;
 
 typedef StageJSON = {
-	var objects:Array<Array<ObjectJeisom>>;
+	var objects:Array<ObjectJeisom>;
 	var bfPos:Array<Float>;
 	var gfPos:Array<Float>;
 	var dadPos:Array<Float>;
@@ -36,15 +36,16 @@ typedef ObjectJeisom = {
 	var scrollX:Float;
 	var scrollY:Float;
 	var frontChars:Bool;
+	var flipX:Bool;
 	var animated:Bool;
-	var animations:Array<Array<Animation>>;
+	var animations:Array<Animation>;
 	var blend:String;
 }
 
 typedef Animation = {
 	var name:String;
 	var prefix:String;
-	var fps:String;
+	var fps:Int;
 	var indices:Array<Int>;
 	var offsets:Array<Float>;
 	var loop:Bool;

@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxGame;
+import flixel.FlxState;
 import flixel.FlxG;
 import openfl.Lib;
 import openfl.display.FPS;
@@ -21,13 +22,13 @@ class Main extends Sprite
 	];
 	*/
 
-	public static var width:Int = 1280;
-	public static var height:Int = 720;
+	var width:Int = 1280;
+	var height:Int = 720;
+	var zoom:Float = -1;
+	var skipSplash:Bool = false; //why you gonna hide it???
+	var fullscreen:Bool = false;
 	public static var state:Class<FlxState> = PlayState;
 	public static var fps:Int = 60;
-	public static var zoom:Int = -1;
-	public static var skipSplash:Bool = false; //why you gonna hide it???
-	public static var fullscreen:Bool = false;
 
 	public static function main()
 	{

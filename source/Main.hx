@@ -22,14 +22,6 @@ class Main extends Sprite
 	];
 	*/
 
-	var width:Int = 1280;
-	var height:Int = 720;
-	var zoom:Float = -1;
-	var skipSplash:Bool = false; //why you gonna hide it???
-	var fullscreen:Bool = false;
-	public static var state:Class<FlxState> = PlayState;
-	public static var fps:Int = 60;
-
 	public static function main()
 	{
 		Lib.current.addChild(new Main());
@@ -61,29 +53,6 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if (zoom == -1)
-		{
-			var gameWidth = width;
-			var gameHeight = height;
-			var ratioX:Float = stageWidth / width;
-			var ratioY:Float = stageHeight / height;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}
-
-		addChild(new FlxGame(
-			width, //width
-			height, //height
-			state, // the initial state
-			zoom, //the zoom
-			fps, //the framerate
-			fps, //again
-			skipSplash, //the splash (its cool go apreciate it pls if you hide you are cring)
-			fullscreen)); //fullscreen
+		return addChild(new FlxGame(0, 0, PlayState, 1, 60, 60, false));
 	}
 }

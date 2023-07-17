@@ -130,8 +130,6 @@ class TestingOption extends FlxSprite
 	{
 		scale.set(Utils.fakeLerp(scale.x, targetScaleX, 0.09), Utils.fakeLerp(scale.y, targetScaleY, 0.09));
 	}
-	public function play(animationPrefix:String);
-	{
+	public function play(animationPrefix:String)
 		return animation.play(animationPrefix);
-	}
 }

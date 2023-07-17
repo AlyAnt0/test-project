@@ -25,28 +25,31 @@ class PlayState extends FlxStateCustom
 			text2.alpha = 0.0000001;
 			theseObjs.push(text2);
 
-			FlxTween.tween(text2, {alpha: 0.5}, 1, {onComplete: function(_v:FlxTween)
-				new FlxTimer().start(0.5, function (_tmr:FlxTimer){
-					for (_obj in theseObjs)
-					{
-						for (i in 0...theseObjs.length)
+			FlxTween.tween(text2, {alpha: 0.5}, 1, {
+				onComplete: function(_v:FlxTween){
+					new FlxTimer().start(0.5, function (_tmr:FlxTimer){
+						for (_obj in theseObjs)
 						{
-							var j:Int = 0;
-							if (_obj.ID == j)
+							for (i in 0...theseObjs.length)
 							{
-								FlxTween.tween(_obj, {alpha: 0.0000001}, 0.3 * j, {
-									onComplete: function(_:FlxTween){
-										j++;
-									}
-								});
+								var j:Int = 0;
+								if (_obj.ID == j)
+								{
+									FlxTween.tween(_obj, {alpha: 0.0000001}, 0.3 * j, {
+										onComplete: function(_:FlxTween){
+											j++;
+										}
+									});
+								}
+								if (!theseObjs.contains(_obj)) {
+									new FlxTimer().start(0.5, function(_tmr:FlxTween){
+										canChangeState = true;
+									});
+								}
 							}
-							if (!theseObjs.contains(_obj))
-								new FlxTimer().start(0.5, function(_tmr:FlxTween){
-									canChangeState = true;
-								});
 						}
-					}
-				});
+					});
+				}
 			});
 		});
 		//im a little proud of this code that ive made lmao -aly-ant0
@@ -59,6 +62,7 @@ class PlayState extends FlxStateCustom
 	{
 		if (canChangeState)
 			FlxG.switchState(new MainMenu());
+
 		super.update(elapsed);
 	}
 }

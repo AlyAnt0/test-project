@@ -48,6 +48,7 @@ class StageEditor extends FlxStateCustom
 	var objectTexts:FlxTypedGroup<FlxText>;
 	var textStatus:FlxText;
 	var canMoveCam:Bool = false;
+	var canMoveChars:Bool = false;
 	var directionX:Int = 0;
 	var directionY:Int = 0;
 	var curObjectSelected:Int = 0;

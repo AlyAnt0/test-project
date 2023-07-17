@@ -35,11 +35,11 @@ typedef ObjectJeisom = {
 	var scale:Float;
 	var scrollX:Float;
 	var scrollY:Float;
-	var frontChars:Bool;
-	var flipX:Bool;
-	var animated:Bool;
-	var animations:Array<Animation>;
-	var blend:String;
+	@:optional var frontChars:Bool;
+	@:optional var flipX:Bool;
+	@:optional var animated:Bool;
+	@:optional var animations:Array<Animation>;
+	@:optional var blend:String;
 }
 
 typedef Animation = {

@@ -46,6 +46,7 @@
 	
 	<!--thesse haxe libraries-->
 	<haxelib name="hscript" />
+	<haxelib name="extension-androidtools" if="android"/>
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->

@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
+import flixel.FlxObject;
 
 class PlayState extends FlxStateCustom
 {
@@ -15,7 +16,7 @@ class PlayState extends FlxStateCustom
 	{
 		var text = new FlxText(0, 0, FlxG.width, "Hello World!");
 		text.setFormat(Paths.font("vcr.ttf"), 48, FlxColor.WHITE/*, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK*/);
-		text.setPosition(0, (FlxG.height / 2) - (text.height / 2));
+		text.y = (FlxG.height / 2) - (text.height / 2);
 		theseObjs.push(text);
 
 		new FlxTimer().start(1, function(tmr:FlxTimer){
@@ -35,7 +36,7 @@ class PlayState extends FlxStateCustom
 								var j:Int = 0;
 								if (_obj.ID == j)
 								{
-									FlxTween.tween(_obj, {alpha: 0.0000001}, 0.3 * j, {
+									FlxTween.tween(_obj, {alpha: 0.0000001}, 0.3, {
 										onComplete: function(_:FlxTween){
 											j++;
 										}

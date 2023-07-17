@@ -100,7 +100,7 @@ class MainMenu extends FlxStateCustom
 
 	function accept()
 		return FlxG.switchState(option.get(optionArray[curSelected]));
-
+}
 class TestingOption extends FlxSprite
 {
 	public var targetX:Float = 0;

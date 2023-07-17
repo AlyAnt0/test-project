@@ -5,8 +5,8 @@ import flixel.FlxSprite;
 import flixel.tween.FlxTween;
 import flixel.math.FlxMath;
 import flixel.groups.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
-import flixel.math.FlxMath;
 import haxe.Json;
 
 using StringTools;

@@ -43,7 +43,7 @@ class PlayState extends FlxStateCustom
 									});
 								}
 								if (!theseObjs.contains(_obj)) {
-									new FlxTimer().start(0.5, function(_tmr:FlxTween){
+									new FlxTimer().start(0.5, function(_tmr:FlxTimer){
 										canChangeState = true;
 									});
 								}

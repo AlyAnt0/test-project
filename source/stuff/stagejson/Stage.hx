@@ -15,7 +15,7 @@ import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.FlxObject;
 import flixel.FlxBasic;
-import openfl.utils.Assets:
+import openfl.utils.Assets;
 
 using StringTools;
 
@@ -46,9 +46,9 @@ typedef Animation = {
 	var name:String;
 	var prefix:String;
 	var fps:Int;
-	var indices:Array<Int>;
-	var offsets:Array<Float>;
-	var loop:Bool;
+	@:optional var indices:Array<Int>;
+	@:optional var offsets:Array<Float>;
+	@:optional var loop:Bool;
 }
 class Stage extends FlxTypedGroup<FlxBasic> {
   public static var jsonObjects:Map<String,FlxSprite>=[];

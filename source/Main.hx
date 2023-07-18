@@ -25,6 +25,8 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		SUtil.uncaughtErrorHandler();
+
 		addChild(new FlxGame(1280, 720, PlayState, 1, 60, 60, false));
 	}
 }

@@ -1,5 +1,6 @@
 package stuff.stagejson;
 
+//flixel libs
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -19,19 +20,21 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
+import flixel.math.FlxPoint;
 #if android
 import mobile.FlxButton;
 #else
 import flixel.ui.FlxButton;
 #end
 import flixel.ui.FlxSpriteButton;
+//openfl libs
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
+import openfl.utils.Assets as OpenFLAssets;
+//other libs
 import haxe.Json;
-import openfl.utils.Assets as OpenFLAssets; 
 import stuff.stagejson.Stage.StageJSON;
-import flixel.math.FlxPoint;
 
 class StageEditor extends FlxStateCustom
 {
@@ -48,7 +51,9 @@ class StageEditor extends FlxStateCustom
 	var objectTexts:FlxTypedGroup<FlxText>;
 	var textStatus:FlxText;
 	var canMoveCam:Bool = false;
+	var canMoveObject:Bool = false;
 	var canMoveChars:Bool = false;
+	var canMoveOffset:Bool = false;
 	var directionX:Int = 0;
 	var directionY:Int = 0;
 	var curObjectSelected:Int = 0;
@@ -144,25 +149,51 @@ class StageEditor extends FlxStateCustom
 		var tabs = [
 			//{name: 'Offsets', label: 'Offsets'},
 			{name: 'Object', label: 'Object'},
+			{name: 'Stage', label: 'Stage'},
 		];
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.cameras = [camUI];
 		UI_box.resize(250, 310);
 		UI_box.x = FlxG.width - 268;
-		UI_box.y = (FlxG.height - UI_box.height)-296;
+		UI_box.y = (FlxG.height - UI_box.height)-264;
 		UI_box.scrollFactor.set();
 
 		setUI();
 		loadTemplate();
 		super.create();
+
+		#if mobile
+		addVirtualPad(FULL, A_B_X_Y_C);
+		#end
 	}
 
 	override function update(elapsed:Float)
 	{
+		//TODO: a key for enableing these variables (canMoveChars, canMoveOffset)
 		for (object in stageObjects)
 		{
 			if (object.ID == curObjectSelected)
-				object.shader = Paths.shader('outline');
+			{
+				//object.shader = Paths.shader('outline');
+				if (canMoveChars){
+					if(controls.LEFT){
+						object.x -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+						stageJson.objects[curObjectSelected].x -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+					}
+					if(controls.RIGHT){
+						object.x += FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+						stageJson.objects[curObjectSelected].x += FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+					}
+					if(controls.UP){
+						object.y -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+						stageJson.objects[curObjectSelected].y -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+					}
+					if(controls.DOWN){
+						object.y -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+						stageJson.objects[curObjectSelected].y -= FlxG.keys.justPressed.E ? elapsed / 2 : 1;
+					}
+				}
+			}
 		}
 
 		// camera stuff
@@ -170,36 +201,49 @@ class StageEditor extends FlxStateCustom
 			textStatus.text = "[ NO CAMERA MODE ]";
 		else
 			textStatus.text = "[ CAMERA MODE ]";
-		if(controls.ACCEPT)
-			canMoveCam = !canMoveCam;
+		if(controls.ACCEPT && !canMoveCam)
+			canMoveCam = true;
+		if(controls.BACK && canMoveCam)
+			canMoveCam = false;
 
-		camFollow.x += elapsed * directionX;
-		camFollow.y += elapsed * directionY;
+		camFollow.x += elapsed/2 * directionX;
+		camFollow.y += elapsed/2 * directionY;
 		if (canMoveCam){
+			//horizontal
 			if (controls.LEFT)
 				directionX = -1;
 			if (controls.RIGHT)
 				directionX = 1;
+			//vertical
+			if (controls.UP)
+				directionY = -1;
+			if (controls.DOWN)
+				directionY = -1;
 			if (FlxG.keys.justReleased.M){
 				while (camGame.zoom < 3)
-					camGame.zoom += elapsed;
+					camGame.zoom += elapsed/2;
 			}else if (FlxG.keys.justReleased.N){
 				while (camGame.zoom > 3)
-					camGame.zoom -= elapsed;
+					camGame.zoom -= elapsed/2;
 			}
 		}
-		if (controls.LEFT)
-			curObjectSelected -= 1;
-		if (controls.RIGHT)
-			curObjectSelected += 1;
+		if (!canMoveCam && !canMoveChars){
+			if (controls.LEFT)
+				curObjectSelected -= 1;
+			if (controls.RIGHT)
+				curObjectSelected += 1;
+		}
 
 		super.update(elapsed);
 	}
 
+	//input texts
 	var imageInputText:FlxUIInputText;
+	//steppers
 	var positionXStepper:FlxUINumericStepper; //x
 	var positionYStepper:FlxUINumericStepper; //y
-	var stepByStep:Float = 1;
+	var scaleStepper:FlxUINumericStepper;
+	var stepByStep:Float = 1; //for position
 	public function setUI()
 	{
 		var tab_group = new FlxUI(null, UI_box);
@@ -209,9 +253,13 @@ class StageEditor extends FlxStateCustom
 		imageInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 	
 		positionXStepper = new FlxUINumericStepper(imageInputText.x, (imageInputText.y + imageInputText.height) + 18, stepByStep, stageObjects[curObjectSelected].x, -900000, 900000, 0);
-		positionYStepper = new FlxUINumericStepper((positionXStepper.x + positionXStepper.width) +, (imageInputText.y + imageInputText.height) + 18, stepByStep, stageObjects[curObjectSelected].y, -900000, 900000, 0);
+		positionYStepper = new FlxUINumericStepper((positionXStepper.x + positionXStepper.width) + 10, (imageInputText.y + imageInputText.height) + 18, stepByStep, stageObjects[curObjectSelected].y, -900000, 900000, 0);
+		scaleStepper = new FlxUINumericStepper(imageInputText.x, (positionXStepper.y + positionXStepper.height) + 8, 0.5, stageObjects[curObjectSelected].scale, 0.0, 20.0, 0);
 
 		tab_group.add(imageInputText);
+		tab_group.add(positionXStepper);
+		tab_group.add(positionYStepper);
+		tab_group.add(scaleStepper);
 		UI_box.addGroup(tab_group);
 	}
 	public function loadTemplate()
@@ -222,9 +270,9 @@ class StageEditor extends FlxStateCustom
 			for (object in stageObjects)
 			{
 				var obj = file.objects[i];
-				setObject(obj.image, obj.x, obj.y, obj.scale, obj.scrollX, obj.scrollY, obj.frontChars, obj.flipX, obj.animated, obj.animations, obj.blend);
 				stageObjects.remove(object);
-				stageObjects.push(stageEditorMap.get(substring(obj.image.indexOf('/') + 1, obj.image.length)));
+				setObject(obj.image, obj.x, obj.y, obj.scale, obj.scrollX, obj.scrollY, obj.frontChars, obj.flipX, obj.animated, obj.animations, obj.blend);
+				//stageObjects.push(stageEditorMap.get(substring(obj.image.indexOf('/') + 1, obj.image.length)));
 			}
 		}
 	}
@@ -301,6 +349,7 @@ class StageEditor extends FlxStateCustom
 				add(stageEditorMap.get(objname));
 			else
 				stage.foreground.add(stageEditorMap.get(objname));
+			stageObjects.push(stageEditorMap.get(objname));
 		//}
 	}
 

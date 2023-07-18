@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.math.FlxMath;
-import flixel.groups.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 import flixel.FlxState;

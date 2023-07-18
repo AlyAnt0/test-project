@@ -2,11 +2,12 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.tween.FlxTween;
+import flixel.tweens.FlxTween;
 import flixel.math.FlxMath;
-import flixel.groups.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.groups.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
+import flixel.FlxState;
 import haxe.Json;
 
 using StringTools;
@@ -20,7 +21,7 @@ class MainMenu extends FlxStateCustom
 	var optionArray:Array<String> = [
 		'stage_editor'
 	];
-	var grp:FlxTypedSpriteGroup<TestingOption>;
+	var grp:FlxTypedGroup<TestingOption>;
 	var curSelected:Int = 0;
 	var targetYPos:Float = 0;
 
@@ -30,7 +31,7 @@ class MainMenu extends FlxStateCustom
 		persistentUpdate = persistentDraw = true;
 		FlxG.camera.bgColor = 0xFFFAC40C;
 
-		grp = new FlxTypedSpriteGroup<TestingOption>();
+		grp = new FlxTypedGroup<TestingOption>();
 		add(grp);
 
 		for (i in 0...optionArray.length)
@@ -48,6 +49,7 @@ class MainMenu extends FlxStateCustom
 		addVirtualPad(LEFT_RIGHT, A);
 		#end
 	}
+
 	override function update(elapsed:Float)
 	{
 		//transition
@@ -126,7 +128,7 @@ class TestingOption extends FlxSprite
 		//FlxMath.lerp(x, (FlxG.width - 200) * targetX + 10 * (scaleX - 2), );
 	}
 
-	public function scaleObject(targetScaleX:Float, targetScaleY:Float, elapsedVal:Float)
+	public function scaleObject(targetScaleX:Float, targetScaleY:Float)
 	{
 		scale.set(Utils.fakeLerp(scale.x, targetScaleX, 0.09), Utils.fakeLerp(scale.y, targetScaleY, 0.09));
 	}
